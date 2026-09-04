@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RecoveryOS - Live Dashboard</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>RecoveryOS <span>Decision Engine</span></h1>
+        <div class="live-indicator"><span class="pulse"></span> LIVE RECOVERY ACTIVITY</div>
+    </header>
+
+    <main>
+        <section class="kpi-banner">
+            <div class="kpi-card">
+                <h3>Executed Actions</h3>
+                <p id="kpi-total">0</p>
+            </div>
+            <div class="kpi-card">
+                <h3>Successful Recoveries</h3>
+                <p id="kpi-success">0</p>
+            </div>
+            <div class="kpi-card">
+                <h3>Recovery Rate</h3>
+                <p id="kpi-recovery-rate">0%</p>
+            </div>
+            <div class="kpi-card">
+                <h3>Recovered Value</h3>
+                <p id="kpi-revenue">₹0</p>
+            </div>
+            <div class="kpi-card">
+                <h3>Policy Feedback Queue</h3>
+                <p id="kpi-feedback" style="color: #3182ce;">READY</p>
+            </div>
+        </section>
+
+        <section class="feed-section">
+            <h2>Live Audit Trail <small style="font-size: 0.8rem; color: #718096; font-weight: normal;">(AI Proposed → Policy Checked → Executed)</small></h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Time / Txn</th>
+                            <th>Amount</th>
+                            <th>Reason</th>
+                            <th>AI Proposal</th>
+                            <th>Policy Action</th>
+                            <th>Final Executed Action</th>
+                            <th>Execution Outcome</th>
+                        </tr>
+                    </thead>
+                    <tbody id="decision-table-body">
+                        <!-- Rows injected via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal for Decision Detail -->
+    <div id="decision-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 id="modal-txn-id">Decision Intel</h2>
+            
+            <!-- New Top Summary Section -->
+            <div id="modal-summary" style="font-size: 1.1rem; margin-bottom: 1.5rem; line-height: 1.6; padding-bottom: 1rem; border-bottom: 1px solid #e2e8f0;">
+                <!-- Injected via JS -->
+            </div>
+            
+            <div class="modal-split">
+                <div>
+                    <h3>Model Explanation</h3>
+                    <div id="modal-reason" class="reason-text" style="background: transparent; border: none; padding: 0;"></div>
+                    
+                    <h3>Guardrails</h3>
+                    <ul id="modal-guardrails" class="guardrail-list"></ul>
+                </div>
+                
+                <div>
+                    <h3>Counterfactual action evaluation</h3>
+                    <table class="alt-table">
+                        <thead>
+                            <tr>
+                                <th>Intervention</th>
+                                <th>Recovery</th>
+                                <th>Expected ₹</th>
+                            </tr>
+                        </thead>
+                        <tbody id="modal-alternatives"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

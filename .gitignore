@@ -1,0 +1,12 @@
+.env
+__pycache__/
+*.pyc
+
+dataset_and_model_work/policy_evaluation_ai_heldout
+dataset_and_model_work/recovery_prepared
+dataset_and_model_work/policy_evaluation_ai
+dataset_and_model_work/policy_evaluation
+
+dataset_and_model_work/*.parquet
+dataset_and_model_work/recovery_models/
+dataset_and_model_work/recovery_models_parallel/

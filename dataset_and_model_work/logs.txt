@@ -1,0 +1,92 @@
+E:\Projects\razorpay\dataset_gen>python train_parallel_gpu.py --data-dir recovery_prepared --allow-cpu-fallback
+
+========================================================================================
+RecoveryOS PARALLEL GPU TRAINING
+========================================================================================
+
+GPU 0 -> CatBoost
+GPU 1 -> XGBoost
+GPU 2 -> LightGBM
+GPU 3 -> RESERVED
+
+Train: recovery_prepared\recovery_train.parquet
+Val  : recovery_prepared\recovery_validation.parquet
+CPU threads/model: 12
+Rows/model: ALL
+
+Started catboost on GPU 0 (PID 22440)
+Started xgboost on GPU 1 (PID 13496)
+Started lightgbm on GPU 2 (PID 20616)
+[PID 20616] LIGHTGBM -> GPU 2 | loading data
+[PID 22440] CATBOOST -> GPU 0 | loading data
+[PID 13496] XGBOOST -> GPU 1 | loading data
+[PID 22440] Loading recovery_train.parquet
+[PID 13496] Loading recovery_train.parquet
+[PID 20616] Loading recovery_train.parquet
+[PID 20616] Loading recovery_validation.parquet
+[PID 22440] Loading recovery_validation.parquet
+[PID 13496] Loading recovery_validation.parquet
+[PID 20616] LIGHTGBM -> GPU 2 | matrix (16003973, 56)
+[PID 20616] LIGHTGBM -> GPU 2 | trying device_type='cuda'
+C:\ProgramData\miniconda3\Lib\site-packages\lightgbm\sklearn.py:1106: LGBMDeprecationWarning: The argument 'eval_set' is deprecated, use 'eval_X' and 'eval_y' instead.
+  eval_set = _validate_eval_set_Xy(eval_set=eval_set, eval_X=eval_X, eval_y=eval_y)
+[LightGBM] [Fatal] CUDA Tree Learner was not enabled in this build.
+Please recompile with CMake option -DUSE_CUDA=1 (NVIDIA GPUs) or -DUSE_ROCM=1 (AMD GPUs)
+[PID 20616] LightGBM CUDA backend failed. Reason: CUDA Tree Learner was not enabled in this build.
+Please recompile with CMake option -DUSE_CUDA=1 (NVIDIA GPUs) or -DUSE_ROCM=1 (AMD GPUs)
+[PID 20616] LIGHTGBM -> GPU 2 | trying device_type='gpu'
+C:\ProgramData\miniconda3\Lib\site-packages\lightgbm\sklearn.py:1106: LGBMDeprecationWarning: The argument 'eval_set' is deprecated, use 'eval_X' and 'eval_y' instead.
+  eval_set = _validate_eval_set_Xy(eval_set=eval_set, eval_X=eval_X, eval_y=eval_y)
+[PID 13496] XGBOOST -> GPU 1 | matrix (16003973, 56)
+[PID 13496] XGBOOST -> GPU 1 | training 16,003,973 rows
+[LightGBM] [Fatal] GPU Tree Learner was not enabled in this build.
+Please recompile with CMake option -DUSE_GPU=1
+[PID 20616] LightGBM GPU backend failed. Reason: GPU Tree Learner was not enabled in this build.
+Please recompile with CMake option -DUSE_GPU=1
+[PID 20616] LIGHTGBM -> falling back to CPU. This will leave GPU 2 mostly unused.
+C:\ProgramData\miniconda3\Lib\site-packages\lightgbm\sklearn.py:1106: LGBMDeprecationWarning: The argument 'eval_set' is deprecated, use 'eval_X' and 'eval_y' instead.
+  eval_set = _validate_eval_set_Xy(eval_set=eval_set, eval_X=eval_X, eval_y=eval_y)
+Training until validation scores don't improve for 120 rounds
+[0]     validation_0-aucpr:0.85428
+[PID 22440] CATBOOST -> GPU 0 | training 16,003,973 rows
+Default metric period is 5 because AUC is/are not implemented for GPU
+[100]   valid_0's auc: 0.776557
+[100]   validation_0-aucpr:0.85761
+0:      test: 0.7693496 best: 0.7693496 (0)     total: 4.3s     remaining: 2h 59m 20s
+[200]   valid_0's auc: 0.776579
+[200]   validation_0-aucpr:0.85770
+Early stopping, best iteration is:
+[179]   valid_0's auc: 0.776584
+[PID 20616] LIGHTGBM -> GPU 2 DONE | mode=cpu | AUC=0.776584 | PR-AUC=0.857763 | time=2.37 min
+[272]   validation_0-aucpr:0.85767
+C:\ProgramData\miniconda3\Lib\site-packages\xgboost\core.py:569: UserWarning: [12:44:34] WARNING: C:\actions-runner\_work\xgboost\xgboost\src\common\error_msg.cc:62: Falling back to prediction using DMatrix due to mismatched devices. This might lead to higher memory usage and slower performance. XGBoost is running on: cuda:1, while the input data is on: cpu.
+Potential solutions:
+- Use a data structure that matches the device ordinal in the booster.
+- Set the device for booster before call to inplace_predict.
+
+This warning will only be shown once.
+
+  return func(**kwargs)
+[PID 13496] XGBOOST -> GPU 1 DONE | AUC=0.776486 | PR-AUC=0.857716 | time=2.61 min
+100:    test: 0.7766147 best: 0.7766147 (100)   total: 7m 38s   remaining: 3h 1m 33s
+200:    test: 0.7766358 best: 0.7766395 (180)   total: 15m 11s  remaining: 2h 53m 41s
+300:    test: 0.7766131 best: 0.7766395 (180)   total: 23m 22s  remaining: 2h 50m 43s
+bestTest = 0.7766394615
+bestIteration = 180
+Shrink model to first 181 iterations.
+[PID 22440] CATBOOST -> GPU 0 DONE | AUC=0.776640 | PR-AUC=0.857832 | time=25.25 min
+
+========================================================================================
+PARALLEL TRAINING COMPLETE
+========================================================================================
+Wall time: 25.29 minutes
+
+MODEL       GPU   AUC         PR-AUC      Brier       TIME(min)
+--------------------------------------------------------------------
+catboost    0     0.776640    0.857832    0.173427    25.25
+lightgbm    2     0.776584    0.857763    0.173442    2.37
+xgboost     1     0.776486    0.857716    0.173478    2.61
+
+Current probability-model winner: CATBOOST (GPU 0)
+
+NEXT STEP: run policy generation/evaluation using the three models and the preserved V2 counterfactual columns.
