@@ -3,17 +3,32 @@ import datetime
 import firebase_admin
 from firebase_admin import credentials, firestore
 
-# Initialize Firebase only once (Flask hot-reloads can cause errors if we don't check this)
 if not firebase_admin._apps:
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    cert_path = os.path.join(current_dir, "..", "config", "firebase_service_account.json")
-    
-    if os.path.exists(cert_path):
-        cred = credentials.Certificate(cert_path)
+    if "FIREBASE_PROJECT_ID" in os.environ:
+        # Vercel / production — use env vars
+        cred = credentials.Certificate({
+            "type": "service_account",
+            "project_id": os.environ["FIREBASE_PROJECT_ID"],
+            "private_key_id": os.environ["FIREBASE_PRIVATE_KEY_ID"],
+            "private_key": os.environ["FIREBASE_PRIVATE_KEY"].replace("\\n", "\n"),
+            "client_email": os.environ["FIREBASE_CLIENT_EMAIL"],
+            "client_id": os.environ["FIREBASE_CLIENT_ID"],
+            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+            "token_uri": "https://oauth2.googleapis.com/token",
+            "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        })
         firebase_admin.initialize_app(cred)
-        print("[DB] Firebase initialized successfully.")
+        print("[DB] Firebase initialized via env vars.")
     else:
-        print(f"[WARNING] Firebase credentials not found at {cert_path}. Writes will fail.")
+        # Local dev — fall back to JSON file
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        cert_path = os.path.join(current_dir, "..", "config", "firebase_service_account.json")
+        if os.path.exists(cert_path):
+            cred = credentials.Certificate(cert_path)
+            firebase_admin.initialize_app(cred)
+            print("[DB] Firebase initialized via local file.")
+        else:
+            print("[WARNING] No Firebase credentials found. Writes will fail.")   
 
 def get_db():
     return firestore.client()
