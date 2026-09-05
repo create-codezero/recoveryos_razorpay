@@ -1,4 +1,4 @@
-<img src="./static/platform.jpg" style="width:100%;"/>
+<img src="./static/platform.png" style="width:100%;"/>
 
 ```markdown
 # RecoveryOS 🚀
@@ -102,6 +102,8 @@ Guardrails include:
 * Non-positive expected revenue $\rightarrow$ `STOP`
 * Recovery suppression
 * Final action override
+
+<img src="./static/platform-2.png" style="width:100%;"/>
 
 **Example:**
 
