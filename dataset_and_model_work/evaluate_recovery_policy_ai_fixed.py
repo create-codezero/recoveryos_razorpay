@@ -1,33 +1,4 @@
-#!/usr/bin/env python3
-"""
-RecoveryOS - Recovery Policy Evaluation
-========================================
 
-Evaluates trained recovery models as action-selection policies.
-
-For each failed transaction:
-
-    P(recovery | context, action)
-        ↓
-    expected_revenue(action)
-        ↓
-    choose best action
-        ↓
-    compare against historical policy + oracle
-
-Supported actions:
-    retry_30m
-    retry_evening
-    payment_link
-    whatsapp_reminder
-    alternate_method
-    stop
-
-IMPORTANT:
-- p_* columns are synthetic ground-truth counterfactuals.
-- They MUST NOT be used as model features.
-- They are used here only for evaluating how good the learned policy is.
-"""
 
 import argparse
 import json
