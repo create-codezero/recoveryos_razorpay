@@ -1,12 +1,4 @@
 def apply_guardrails(payment_context: dict, ai_decision: dict) -> dict:
-    """
-    Applies operational, risk, customer-fatigue, and economic guardrails.
-
-    The AI proposes an action.
-    Guardrails can override that action.
-    If overridden, the final probability/revenue are taken
-    from the corresponding counterfactual action.
-    """
 
     final_decision = ai_decision.copy()
     flags = []
