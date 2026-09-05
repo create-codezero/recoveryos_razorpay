@@ -1,29 +1,4 @@
-"""
-RecoveryOS - Strict Customer-Held-Out Policy Evaluation
 
-Evaluates the trained CatBoost recovery policy on recovery_test.parquet.
-
-IMPORTANT:
-- recovery_test.parquet contains customers never seen during training.
-- Counterfactual p_* columns and oracle columns are NEVER used as model features.
-- observed_recovered is used only for evaluating the historical policy.
-- AI evaluates all 6 candidate interventions and selects the action
-  with the highest predicted expected recovered revenue.
-
-Expected model:
-    recovery_models/catboost_recovery_laptop.cbm
-
-Expected test data:
-    recovery_prepared/recovery_test.parquet
-
-Usage:
-
-python evaluate_recovery_policy_ai_heldout.py ^
-  --input recovery_prepared\recovery_test.parquet ^
-  --model recovery_models\catboost_recovery_laptop.cbm ^
-  --output-dir policy_evaluation_ai_heldout ^
-  --prediction-chunk-size 100000
-"""
 
 import argparse
 import json
