@@ -1,3 +1,5 @@
+<img src="./static/platform.jpg" style="width:100%;"/>
+
 ```markdown
 # RecoveryOS 🚀
 ### AI-Powered Revenue Recovery Engine
