@@ -1,29 +1,4 @@
-#!/usr/bin/env python
-"""
-train_recovery_laptop.py
 
-Laptop-friendly training pipeline for Razorpay RecoveryOS.
-
-Hardware target:
-    - 16 GB system RAM
-    - NVIDIA RTX 3050 4 GB
-    - Windows/Linux
-
-Primary model:
-    CatBoost with native categorical features + GPU
-
-Optional:
-    XGBoost can be enabled later, but CatBoost is the recommended
-    first/final model on the laptop.
-
-Important:
-    observed_intervention is intentionally included as an input feature.
-    The model therefore learns:
-
-        P(recovered | transaction context, intervention)
-
-    This allows policy evaluation by scoring all candidate interventions.
-"""
 
 from __future__ import annotations
 
