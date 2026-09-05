@@ -1,34 +1,3 @@
-#!/usr/bin/env python3
-"""
-RecoveryOS - Recovery Policy Evaluation
-========================================
-
-Evaluates trained recovery models as action-selection policies.
-
-For each failed transaction:
-
-    P(recovery | context, action)
-        ↓
-    expected_revenue(action)
-        ↓
-    choose best action
-        ↓
-    compare against historical policy + oracle
-
-Supported actions:
-    retry_30m
-    retry_evening
-    payment_link
-    whatsapp_reminder
-    alternate_method
-    stop
-
-IMPORTANT:
-- p_* columns are synthetic ground-truth counterfactuals.
-- They MUST NOT be used as model features.
-- They are used here only for evaluating how good the learned policy is.
-"""
-
 import argparse
 import json
 import os
@@ -41,11 +10,6 @@ import numpy as np
 import pandas as pd
 
 warnings.filterwarnings("ignore")
-
-
-# ============================================================
-# CONFIGURATION
-# ============================================================
 
 ACTIONS = [
     "retry_30m",
@@ -65,12 +29,6 @@ PROB_COLUMNS = {
     "stop": "p_stop",
 }
 
-# Approximate intervention costs.
-#
-# Keep these configurable because your synthetic dataset currently
-# does not appear to contain explicit intervention costs.
-#
-# Default = 0 means policy is purely expected-revenue maximizing.
 DEFAULT_COSTS = {
     "retry_30m": 0.0,
     "retry_evening": 0.0,
@@ -79,11 +37,6 @@ DEFAULT_COSTS = {
     "alternate_method": 0.0,
     "stop": 0.0,
 }
-
-
-# ============================================================
-# UTILS
-# ============================================================
 
 def log(msg):
     print(f"[RecoveryOS] {msg}", flush=True)
